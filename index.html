@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Payment</title>
+    <style>
+        /* General Body Styles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f7f6;
+        }
+
+        /* Payment Container */
+        .payment-container {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        /* Header Styles */
+        .payment-header {
+            margin-bottom: 2rem;
+        }
+
+        .payment-header h1 {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .payment-header p {
+            color: #777;
+        }
+
+        /* Form Group */
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box; /* Ensures padding doesn't affect width */
+        }
+
+        /* Button Styles */
+        .btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 0.9rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* QR Code Display */
+        #qrcode {
+            margin: 2rem auto 0;
+            padding: 1rem;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 256px;
+            width: 256px;
+        }
+
+        #qrcode img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="payment-container">
+        <div class="payment-header">
+            <h1>QR Code Payment</h1>
+            <p>Scan the code below to complete your payment.</p>
+        </div>
+
+        <div class="form-group">
+            <label for="amount">Amount</label>
+            <input type="number" id="amount" placeholder="Enter amount" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <input type="text" id="description" placeholder="e.g., Invoice #12345" required>
+        </div>
+
+        <button class="btn" onclick="generateQRCode()">Generate QR Code</button>
+
+        <div id="qrcode"></div>
+    </div>
+
+    <!-- QR Code Generation Library -->
+    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
+
+    <script>
+        function generateQRCode() {
+            const amount = document.getElementById('amount').value;
+            const description = document.getElementById('description').value;
+            const qrcodeContainer = document.getElementById('qrcode');
+
+            if (amount && description) {
+                // Clear previous QR code
+                qrcodeContainer.innerHTML = "";
+
+                // Construct the payment string
+                const paymentString = `Amount: ${amount}\nDescription: ${description}`;
+
+                // Generate new QR code
+                new QRCode(qrcodeContainer, {
+                    text: paymentString,
+                    width: 256,
+                    height: 256,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+            } else {
+                alert("Please fill in both amount and description.");
+            }
+        }
+    </script>
+
+</body>
+</html>
